@@ -1,28 +1,39 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { BlogInterface } from "../services/BlogsAPI";
 
-const article =
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla atque repellat doloremque sunt illo fugiat? Vitae officiis deserunt cupiditate, porro inventore ducimus quo amet ullam, libero culpa eos odio, consequatur exercitationem cumque? Impedit ipsa, harum omnis quia velit ut accusamus dolor nam repellat aliquid officiis iusto fugit vitae nobis dolore.  Impedit ipsa, harum omnis quia velit ut accusamus dolor nam repellat aliquid officiis iusto fugit vitae nobis dolore. ";
+interface BlogPorps {
+  data: BlogInterface;
+}
 
-const Blog = () => {
+const Blog: React.FC<BlogPorps> = ({ data }) => {
+  const { _id, title, content, image } = data;
+
+  const navigate = useNavigate();
+
+  function onBlogOpen() {
+    navigate(`/blog/${_id}`);
+  }
+
   return (
-    <main className="w-full h-[19rem] shadow-md  max-h-[19rem] flex items-center justify-center  p-2">
+    <main
+      className="w-full h-auto shadow-md  min-h-[19rem] flex items-center justify-center  p-2 cursor-pointer hover:shadow-xl transition-all"
+      onClick={() => onBlogOpen()}
+    >
       <div className="w-2/5 h-full ">
         <img
-          src="https://gdb.rferl.org/dc3a4aed-0499-4afe-91ff-ea82479528a9_w1023_r1_s.jpg"
-          alt="bla"
+          src={image}
+          alt={_id}
           className="w-full h-full object-cover rounded-md"
         />
       </div>
 
       <div className=" w-3/5 max-h-full overflow-hidden px-2 flex flex-col items-end gap-8 ">
-        <h1 className="text-4xl font-semibold text-end">
-          დიდი ომის 1000 დღე რიცხვებში
-        </h1>
+        <h1 className="text-2xl font-semibold text-end">{title}</h1>
         <p className="text-sm text-end leading-6 ">
-          {article.length > 450 ? article.substring(0, 450) + "..." : article}
+          {content.length > 450 ? content.substring(0, 450) + "..." : content}
         </p>
         <Link
-          to="/"
+          to={`/blog/${_id}`}
           className="bg-[#FA5420] text-white text-xs tracking-wider font-semibold w-28 h-8 flex items-center justify-center hover:bg-orange-500 transition-all "
         >
           <button>სრულად...</button>
