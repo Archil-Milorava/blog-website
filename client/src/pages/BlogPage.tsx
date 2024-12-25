@@ -22,6 +22,7 @@ const BlogPage = () => {
             ? error.message
             : "An unexpected error occurred."
         );
+        
       }
     };
     fetchBlog();

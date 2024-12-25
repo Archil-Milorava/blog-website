@@ -1,34 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Blog from "../components/Blog";
-import { BlogInterface, fetchBlogs } from "../services/BlogsAPI";
+import { fetchBlogs } from "../services/BlogsAPI";
 
 const HomePage = () => {
-  const [blogs, setBlogs] = useState<BlogInterface[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const { data: blogs, isPending } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: fetchBlogs,
+  });
 
-  useEffect(() => {
-    const getBlogs = async () => {
-      try {
-        const data = await fetchBlogs();
-        setBlogs(data);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-        console.error("Error fetching blogs:", error);
-      }
-    };
-
-    getBlogs();
-  }, []);
 
   return (
     <main className="flex flex-col gap-4  h-auto w-full ">
-      {blogs.map((blog) => (
-        <Blog key={blog._id} data={blog} />
-      ))}
+      {isPending ? (
+        <div>Loading..</div>
+      ) : (
+        blogs?.map((blog) => <Blog key={blog._id} blog={blog} />)
+      )}
     </main>
   );
 };

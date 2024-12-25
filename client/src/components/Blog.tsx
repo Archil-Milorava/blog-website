@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router";
 import { BlogInterface } from "../services/BlogsAPI";
 
 interface BlogPorps {
-  data: BlogInterface;
+  blog: BlogInterface;
 }
 
-const Blog: React.FC<BlogPorps> = ({ data }) => {
-  const { _id, title, content, image } = data;
+const Blog: React.FC<BlogPorps> = ({ blog }) => {
+  const { _id, title, content, image } = blog;
 
   const navigate = useNavigate();
 
